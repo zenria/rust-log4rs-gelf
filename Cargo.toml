@@ -1,0 +1,10 @@
+[package]
+name = "log4rs-gelf"
+version = "0.1.0"
+authors = ["Cédric Dumay <cedric.dumay@gmail.com>"]
+
+[dependencies]
+log = "0.4"
+log4rs = "0.8"
+serde = "1.0"
+serde_derive = "1.0"
