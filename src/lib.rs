@@ -1,24 +1,17 @@
+#[deny(warnings)]
+extern crate chrono;
+extern crate hostname;
 extern crate log4rs;
-extern crate serde;
-
-#[macro_use]
 extern crate log;
+extern crate serde;
+extern crate serde_json;
+
 #[macro_use]
 extern crate serde_derive;
 
+
+pub mod builder;
 pub mod append;
+pub mod encode;
+pub mod error;
 
-//#[test]
-//fn test_env() {
-//    log4rs::init_file(env!("LDP_LOG_FILE"), Default::default()).unwrap();
-//    warn!("test!")
-//}
-
-#[test]
-fn test_gelf() {
-    use append::tcp::TcpSocketAppender;
-
-    let socket = TcpSocketAppender::builder()
-        .address("127.0.0.1:8080".parse().unwrap())
-        .build();
-}
