@@ -51,9 +51,7 @@ pub struct TCPAppenderBuilder {
 
 
 impl TCPAppender {
-    pub fn builder() -> TCPAppenderBuilder {
-        TCPAppenderBuilder { hosts: Vec::new(), batch_size: 1000, max_cache_size: 10000, encoder: None }
-    }
+    pub fn builder() -> TCPAppenderBuilder { TCPAppenderBuilder::new() }
     pub fn network_send(cache: &mut Vec<Vec<u8>>, hosts: &Vec<SocketAddr>) -> Result<(), io::Error> {
         let mut socket = TcpStream::connect(&hosts[..])?;
         println!("Pushing {} message(s)", cache.len());
@@ -96,6 +94,9 @@ impl TCPAppenderBuilder {
 impl Builder for TCPAppenderBuilder {
     type TargetItem = TCPAppender;
 
+    fn new() -> TCPAppenderBuilder {
+        TCPAppenderBuilder { hosts: Vec::new(), batch_size: 1000, max_cache_size: 10000, encoder: None }
+    }
     fn build(self) -> Result<TCPAppender, Error> {
         match self.hosts.len() {
             0 => Err(Error::InvalidConfiguration("No host set!".to_string())),

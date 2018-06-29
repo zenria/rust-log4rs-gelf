@@ -52,6 +52,7 @@ impl GelfEncoderBuilder {
 impl Builder for GelfEncoderBuilder {
     type TargetItem = GelfEncoder;
 
+    fn new() -> GelfEncoderBuilder { GelfEncoderBuilder { null_character: false, additionnal_fields: Map::new() } }
     fn build(self) -> Result<GelfEncoder, Error> {
         Ok(GelfEncoder::new(self.null_character, self.additionnal_fields))
     }
@@ -73,7 +74,7 @@ impl GelfEncoder {
             null_character,
         }
     }
-    pub fn builder() -> GelfEncoderBuilder { GelfEncoderBuilder { null_character: false, additionnal_fields: Map::new() } }
+    pub fn builder() -> GelfEncoderBuilder { GelfEncoderBuilder::new() }
     pub fn null_character(self) -> bool { self.null_character }
     fn current_timestamp() -> i64 { Utc::now().timestamp() }
 }
