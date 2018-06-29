@@ -3,6 +3,8 @@
 `log4rs-gelf` - very simple TCP/Gelf appender for [log4rs](https://github.com/sfackler/log4rs) based on 
 [serde_json](https://github.com/serde-rs/json).
 
+**Work in progress, for testing only !**
+
 ## Usage
 
 Add this to your Cargo.toml:
@@ -24,12 +26,12 @@ extern crate log4rs_gelf;
 extern crate log;
 
 use log4rs::config::{Config, Appender, Root};
-use log4rs_gelf::encode::gelf::GelfEncoder;
 use log4rs_gelf::append::tcp::TCPAppender;
 use log4rs_gelf::builder::Builder;
+use log4rs_gelf::encode::gelf::GelfEncoder;
 use log::LevelFilter;
-use std::{thread, time};
 use serde_json::Value;
+use std::{thread, time};
 
 
 fn main() {
