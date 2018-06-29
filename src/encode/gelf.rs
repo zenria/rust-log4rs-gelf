@@ -63,13 +63,20 @@ impl Builder for GelfEncoderBuilder {
 
 #[derive(Debug)]
 pub struct GelfEncoder {
-    null_character: bool,
-    hostname: String,
     additionnal_fields: Map<String, Value>,
+    hostname: String,
+    null_character: bool,
 }
 
 
 impl GelfEncoder {
+    pub fn new(null_character: bool, additionnal_fields: Map<String, Value>) -> GelfEncoder {
+        GelfEncoder {
+            additionnal_fields,
+            hostname: hostname::get_hostname().unwrap_or("localhost".to_string()),
+            null_character,
+        }
+    }
     pub fn builder() -> GelfEncoderBuilder { GelfEncoderBuilder { null_character: false, additionnal_fields: Map::new() } }
     pub fn null_character(self) -> bool { self.null_character }
     fn current_timestamp() -> i64 { Utc::now().timestamp() }
