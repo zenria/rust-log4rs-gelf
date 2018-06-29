@@ -53,11 +53,7 @@ impl Builder for GelfEncoderBuilder {
     type TargetItem = GelfEncoder;
 
     fn build(self) -> Result<GelfEncoder, Error> {
-        Ok(GelfEncoder {
-            null_character: self.null_character,
-            hostname: hostname::get_hostname().unwrap_or("localhost".to_string()),
-            additionnal_fields: self.additionnal_fields,
-        })
+        Ok(GelfEncoder::new(self.null_character, self.additionnal_fields))
     }
 }
 
