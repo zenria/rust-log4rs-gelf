@@ -65,7 +65,7 @@ fn main() {
         .unwrap();
     let config = Config::builder()
         .appender(Appender::builder().build("gelf", Box::new(buffer)))
-        .build(Root::builder().appender("stdout").appender("gelf").build(LevelFilter::Info))
+        .build(Root::builder().appender("gelf").build(LevelFilter::Info))
         .unwrap();
     let handle = log4rs_gelf::init_config(config).unwrap();
     
