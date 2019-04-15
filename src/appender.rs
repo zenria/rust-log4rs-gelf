@@ -13,7 +13,19 @@ use formatter::GelfFormatter;
 use output::GelfTcpOutput;
 use result::Error;
 
-#[derive(Debug, Deserialize)]
+#[derive(Deserialize)]
+pub struct BufferAppenderConfig {
+    level: GelfLevel,
+    hostname: String,
+    port: u64,
+    use_tls: bool,
+    null_character: bool,
+    buffer_size: Option<usize>,
+    buffer_duration: Option<u64>,
+    additional_fields: BTreeMap<String, serde_value::Value>,
+}
+
+#[derive(Debug)]
 pub struct BufferAppenderBuilder {
     level: GelfLevel,
     hostname: String,
@@ -67,16 +79,20 @@ impl BufferAppenderBuilder {
         self.null_character = null_character;
         self
     }
-    pub fn set_buffer_size(mut self, buffer_size: usize) -> BufferAppenderBuilder {
-        self.buffer_size = Some(buffer_size);
+    pub fn set_buffer_size(mut self, buffer_size: Option<usize>) -> BufferAppenderBuilder {
+        self.buffer_size = buffer_size;
         self
     }
-    pub fn set_buffer_duration(mut self, buffer_duration: u64) -> BufferAppenderBuilder {
-        self.buffer_duration = Some(buffer_duration);
+    pub fn set_buffer_duration(mut self, buffer_duration: Option<u64>) -> BufferAppenderBuilder {
+        self.buffer_duration = buffer_duration;
         self
     }
     pub fn put_additional_field(mut self, key: &str, value: serde_value::Value) -> BufferAppenderBuilder {
         self.additional_fields.insert(key.to_string(), value);
+        self
+    }
+    pub fn extend_additional_field(mut self, additional_fields: BTreeMap<String, serde_value::Value>) -> BufferAppenderBuilder {
+        self.additional_fields.extend(additional_fields);
         self
     }
     pub fn build(self) -> Result<BufferAppender, Error> {
@@ -146,18 +162,3 @@ impl Append for BufferAppender {
 
     fn flush(&self) {}
 }
-
-//pub struct BufferAppenderDeserializer;
-//
-//impl Deserialize for BufferAppenderDeserializer {
-//    type Trait = Append;
-//    type Config = BufferAppenderBuilder;
-//
-//    fn deserialize(
-//        &self,
-//        config: BufferAppenderBuilder,
-//        deserializers: &Deserializers,
-//    ) -> Result<Box<Append>, Box<std::error::Error + Sync + Send>> {
-//        Ok(Box::new(BufferAppender::builder().build()))
-//    }
-//}

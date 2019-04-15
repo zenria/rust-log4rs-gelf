@@ -52,13 +52,13 @@ fn main() {
         .build(Root::builder().appender("gelf_tcp").build(LevelFilter::Info))
         .unwrap();
 
-    log4rs::init_config(config).unwrap();
+    log4rs_gelf::init_config(config).unwrap();
     for idx in 0..10 {
         info!("Test {}", idx)
     }
 
-    // We wait a little to exit...
-    thread::sleep(time::Duration::from_secs(3));
+    // Make sure to flush record buffer
+    log4rs_gelf::flush();
 }
 ```
 

@@ -16,6 +16,11 @@ mod result;
 mod formatter;
 mod output;
 mod macros;
+mod file;
+
+pub fn init_file<P>(path: P, deserializers: Option<log4rs::file::Deserializers>) -> Result<(), log4rs::Error> where P: AsRef<std::path::Path> {
+    log4rs::init_file(path, deserializers.unwrap_or(file::deserializers()))
+}
 
 
 pub fn flush() -> result::Result<()> {
