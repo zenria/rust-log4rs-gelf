@@ -1,17 +1,23 @@
-#[deny(warnings)]
-extern crate chrono;
-extern crate hostname;
-extern crate log4rs;
 extern crate log;
+extern crate log4rs;
+extern crate native_tls;
 extern crate serde;
-extern crate serde_json;
-
 #[macro_use]
 extern crate serde_derive;
+extern crate serde_gelf;
+
+pub use log4rs::init_config;
+
+pub use batch::processor;
+
+pub mod appender;
+mod batch;
+mod result;
+mod formatter;
+mod output;
+mod macros;
 
 
-pub mod builder;
-pub mod append;
-pub mod encode;
-pub mod error;
-
+pub fn flush() -> result::Result<()> {
+    processor().flush()
+}
