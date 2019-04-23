@@ -1,45 +1,32 @@
-use std::collections::btree_map::BTreeMap;
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+// Copyright 2009 The log4rs_gelf Authors. All rights reserved.
 
 use log4rs::append::Append;
 use log4rs::file::{Deserialize, Deserializers};
-use serde_gelf::level::GelfLevel;
 
 use appender::BufferAppenderBuilder;
-
-#[derive(Deserialize)]
-pub struct BufferAppenderConfig {
-    level: GelfLevel,
-    hostname: String,
-    port: u64,
-    use_tls: bool,
-    null_character: bool,
-    buffer_size: Option<usize>,
-    buffer_duration: Option<u64>,
-    additional_fields: BTreeMap<String, serde_value::Value>,
-}
-
 
 struct BufferAppenderDeserializer;
 
 impl Deserialize for BufferAppenderDeserializer {
     type Trait = Append;
-
-    type Config = BufferAppenderConfig;
+    type Config = gelf_logger::Config;
 
     fn deserialize(
         &self,
-        config: BufferAppenderConfig,
-        deserializers: &Deserializers,
+        config: gelf_logger::Config,
+        _deserializers: &Deserializers,
     ) -> Result<Box<Append>, Box<std::error::Error + Sync + Send>> {
-        let mut appender = BufferAppenderBuilder::default()
-            .set_level(config.level)
-            .set_hostname(&config.hostname)
-            .set_port(config.port)
-            .set_use_tls(config.use_tls)
-            .set_null_character(config.null_character)
-            .set_buffer_size(config.buffer_size)
-            .set_buffer_duration(config.buffer_duration)
-            .extend_additional_field(config.additional_fields)
+        let appender = BufferAppenderBuilder::default()
+            .set_level(config.level().clone())
+            .set_hostname(config.hostname())
+            .set_port(config.port().clone())
+            .set_use_tls(config.use_tls().clone())
+            .set_null_character(config.null_character().clone())
+            .set_buffer_size(config.buffer_size().clone())
+            .set_buffer_duration(config.buffer_duration().clone())
+            .extend_additional_field(config.additional_fields().clone())
             ;
 
         Ok(Box::new(appender.build()?))
