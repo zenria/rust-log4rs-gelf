@@ -10,9 +10,8 @@ ovh-ldp = ["gelf_logger/ovh-ldp", "serde_gelf/ovh-ldp"]
 log = "0.4"
 log4rs = "0.8"
 serde-value = "0.5"
-#gelf_logger = { git = "https://github.com/cdumay/rust-gelf_logger"}
-gelf_logger = { path = "../gelf_logger"}
-serde_gelf = { path = "../serde_gelf"}
+gelf_logger = { git = "https://github.com/ovh/gelf_logger" }
+serde_gelf = { git = "https://github.com/ovh/serde_gelf" }
 
 [[bin]]
 name = "config"
