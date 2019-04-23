@@ -1,7 +1,7 @@
 # log4rs-gelf
 
 `log4rs-gelf` - very a TCP/Gelf appender for [log4rs](https://github.com/sfackler/log4rs) based on 
-[serde_gelf](https://github.com/cdumay/rust-serde_gelf).
+[serde_gelf](https://github.com/ovh/serde_gelf) and [gelf_logger](https://github.com/ovh/gelf_logger).
 
 
 ## Examples
