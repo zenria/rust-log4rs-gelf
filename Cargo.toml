@@ -1,7 +1,7 @@
 [package]
-name = "log4rs_gelf"
+name = "log4rs-gelf"
 version = "0.1.0"
-authors = ["Cédric Dumay <cedric.dumay@corp.ovh.com>"]
+authors = ["OVH SAS <github@ovh.net>"]
 
 [features]
 ovh-ldp = ["gelf_logger/ovh-ldp", "serde_gelf/ovh-ldp"]

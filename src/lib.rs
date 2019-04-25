@@ -1,6 +1,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
-// Copyright 2009 The log4rs_gelf Authors. All rights reserved.
+// Copyright 2009 The log4rs-gelf Authors. All rights reserved.
 
 //! # log4rs_gelf
 //!
