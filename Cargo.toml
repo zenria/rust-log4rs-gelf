@@ -10,5 +10,5 @@ ovh-ldp = ["gelf_logger/ovh-ldp", "serde_gelf/ovh-ldp"]
 log = "0.4"
 log4rs = "0.8"
 serde-value = "0.5"
-gelf_logger = { git = "https://github.com/ovh/gelf_logger" }
-serde_gelf = { git = "https://github.com/ovh/serde_gelf" }
+gelf_logger = "0.1"
+serde_gelf = "0.1"
