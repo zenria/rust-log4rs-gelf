@@ -72,7 +72,10 @@
 //!    log4rs_gelf::flush().expect("Failed to send buffer, log records can be lost !");
 //! }
 //! ```
-
+#![doc(
+html_logo_url = "https://eu.api.ovh.com/images/com-square-bichro.png",
+html_favicon_url = "https://www.ovh.com/favicon.ico",
+)]
 extern crate gelf_logger;
 extern crate log;
 extern crate log4rs;
