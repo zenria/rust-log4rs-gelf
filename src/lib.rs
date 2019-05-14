@@ -78,8 +78,6 @@ extern crate log;
 extern crate log4rs;
 extern crate serde_gelf;
 
-use log4rs::Handle;
-
 pub use appender::{BufferAppender, BufferAppenderBuilder};
 
 mod file;
