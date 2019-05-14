@@ -1,4 +1,9 @@
-# log4rs-gelf [![Build Status](https://travis-ci.org/ovh/rust-log4rs-gelf.svg?branch=master)](https://travis-ci.org/ovh/rust-log4rs-gelf) [![Latest version](https://img.shields.io/crates/v/log4rs-gelf.svg)](https://crates.io/crates/log4rs-gelf) [![Documentation](https://docs.rs/log4rs-gelf/badge.svg)](https://docs.rs/log4rs-gelf) ![License](https://img.shields.io/crates/l/log4rs-gelf.svg)
+# log4rs-gelf 
+
+[![Build Status](https://travis-ci.org/ovh/rust-log4rs-gelf.svg?branch=master)](https://travis-ci.org/ovh/rust-log4rs-gelf) 
+[![Latest version](https://img.shields.io/crates/v/log4rs-gelf.svg)](https://crates.io/crates/log4rs-gelf) 
+[![Documentation](https://docs.rs/log4rs-gelf/badge.svg)](https://docs.rs/log4rs-gelf) 
+![License](https://img.shields.io/crates/l/log4rs-gelf.svg)
 
 `log4rs-gelf` - A TCP/Gelf appender for [log4rs](https://github.com/sfackler/log4rs) based on 
 [serde_gelf](https://github.com/ovh/rust-serde_gelf) and [gelf_logger](https://github.com/ovh/rust-gelf_logger).
