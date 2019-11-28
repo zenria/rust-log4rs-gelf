@@ -66,7 +66,7 @@ pub struct BufferAppenderBuilder {
     null_character: bool,
     buffer_size: Option<usize>,
     buffer_duration: Option<u64>,
-    additional_fields: BTreeMap<String, serde_value::Value>,
+    additional_fields: BTreeMap<serde_value::Value, serde_value::Value>,
 }
 
 impl Default for BufferAppenderBuilder {
@@ -81,8 +81,8 @@ impl Default for BufferAppenderBuilder {
             buffer_duration: Some(500),
             additional_fields: {
                 let mut additional_fields = BTreeMap::new();
-                additional_fields.insert("pkg_name".into(), serde_value::Value::String(env!("CARGO_PKG_NAME").into()));
-                additional_fields.insert("pkg_version".into(), serde_value::Value::String(env!("CARGO_PKG_VERSION").into()));
+                additional_fields.insert(serde_value::Value::String("pkg_name".into()), serde_value::Value::String(env!("CARGO_PKG_NAME").into()));
+                additional_fields.insert(serde_value::Value::String("pkg_version".into()), serde_value::Value::String(env!("CARGO_PKG_VERSION").into()));
                 additional_fields
             },
         }
@@ -131,11 +131,11 @@ impl BufferAppenderBuilder {
     }
     /// Adds an additional data which will be append to each log entry.
     pub fn put_additional_field(mut self, key: &str, value: serde_value::Value) -> BufferAppenderBuilder {
-        self.additional_fields.insert(key.to_string(), value);
+        self.additional_fields.insert(serde_value::Value::String(key.into()), value);
         self
     }
     /// Adds multiple additional data which will be append to each log entry.
-    pub fn extend_additional_field(mut self, additional_fields: BTreeMap<String, serde_value::Value>) -> BufferAppenderBuilder {
+    pub fn extend_additional_field(mut self, additional_fields: BTreeMap<serde_value::Value, serde_value::Value>) -> BufferAppenderBuilder {
         self.additional_fields.extend(additional_fields);
         self
     }
