@@ -16,5 +16,5 @@ ovh-ldp = ["gelf_logger/ovh-ldp", "serde_gelf/ovh-ldp"]
 log = "0.4"
 log4rs = "0.8"
 serde-value = "0.6"
-gelf_logger = { git = "https://github.com/zenria/rust-gelf_logger.git", branch="make-it-compile"}
+gelf_logger = { git = "https://github.com/zenria/rust-gelf_logger.git", branch="do_not_set_logger"}
 serde_gelf = "0.1"
