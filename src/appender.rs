@@ -5,10 +5,10 @@
 use std::collections::BTreeMap;
 use std::fmt;
 
-use log4rs::append::Append;
+use gelf_logger::{Batch, BatchProcessor, Config};
 use log::Record;
+use log4rs::append::Append;
 use serde_gelf::{GelfLevel, GelfRecord};
-use gelf_logger::Config;
 
 /// Struct to handle the GELF buffer.
 ///
@@ -33,7 +33,9 @@ use gelf_logger::Config;
 ///         ;
 /// }
 /// ```
-pub struct BufferAppender;
+pub struct BufferAppender {
+    processor: BatchProcessor,
+}
 
 /// Builder for [`BufferAppender`](struct.BufferAppender.html).
 ///
@@ -81,14 +83,19 @@ impl Default for BufferAppenderBuilder {
             buffer_duration: Some(500),
             additional_fields: {
                 let mut additional_fields = BTreeMap::new();
-                additional_fields.insert(serde_value::Value::String("pkg_name".into()), serde_value::Value::String(env!("CARGO_PKG_NAME").into()));
-                additional_fields.insert(serde_value::Value::String("pkg_version".into()), serde_value::Value::String(env!("CARGO_PKG_VERSION").into()));
+                additional_fields.insert(
+                    serde_value::Value::String("pkg_name".into()),
+                    serde_value::Value::String(env!("CARGO_PKG_NAME").into()),
+                );
+                additional_fields.insert(
+                    serde_value::Value::String("pkg_version".into()),
+                    serde_value::Value::String(env!("CARGO_PKG_VERSION").into()),
+                );
                 additional_fields
             },
         }
     }
 }
-
 
 impl BufferAppenderBuilder {
     /// Sets threshold for this logger to level. Logging messages which are less severe than level
@@ -130,12 +137,20 @@ impl BufferAppenderBuilder {
         self
     }
     /// Adds an additional data which will be append to each log entry.
-    pub fn put_additional_field(mut self, key: &str, value: serde_value::Value) -> BufferAppenderBuilder {
-        self.additional_fields.insert(serde_value::Value::String(key.into()), value);
+    pub fn put_additional_field(
+        mut self,
+        key: &str,
+        value: serde_value::Value,
+    ) -> BufferAppenderBuilder {
+        self.additional_fields
+            .insert(serde_value::Value::String(key.into()), value);
         self
     }
     /// Adds multiple additional data which will be append to each log entry.
-    pub fn extend_additional_field(mut self, additional_fields: BTreeMap<serde_value::Value, serde_value::Value>) -> BufferAppenderBuilder {
+    pub fn extend_additional_field(
+        mut self,
+        additional_fields: BTreeMap<serde_value::Value, serde_value::Value>,
+    ) -> BufferAppenderBuilder {
         self.additional_fields.extend(additional_fields);
         self
     }
@@ -151,12 +166,12 @@ impl BufferAppenderBuilder {
             .set_buffer_duration(self.buffer_duration.unwrap_or(500))
             .extend_additional_fields(self.additional_fields)
             .build();
-        let _ = gelf_logger::init(config)?;
 
-        Ok(BufferAppender {})
+        Ok(BufferAppender {
+            processor: gelf_logger::init_processor(&config)?,
+        })
     }
 }
-
 
 impl BufferAppender {
     /// Creates a new [`BufferAppenderBuilder`](struct.BufferAppenderBuilder.html).
@@ -180,12 +195,11 @@ impl fmt::Debug for BufferAppender {
     }
 }
 
-
 impl Append for BufferAppender {
-    fn append(&self, record: &Record) -> Result<(), Box<std::error::Error + Sync + Send>> {
-        match gelf_logger::processor().send(&GelfRecord::from(record)) {
+    fn append(&self, record: &Record) -> Result<(), Box<dyn std::error::Error + Sync + Send>> {
+        match self.processor.send(&GelfRecord::from(record)) {
             Ok(()) => Ok(()),
-            Err(exc) => Err(Box::new(exc))
+            Err(exc) => Err(Box::new(exc)),
         }
     }
 
