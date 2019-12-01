@@ -197,10 +197,7 @@ impl fmt::Debug for BufferAppender {
 
 impl Append for BufferAppender {
     fn append(&self, record: &Record) -> Result<(), Box<dyn std::error::Error + Sync + Send>> {
-        match self.processor.send(&GelfRecord::from(record)) {
-            Ok(()) => Ok(()),
-            Err(exc) => Err(Box::new(exc)),
-        }
+        Ok(self.processor.send(&GelfRecord::from(record))?)
     }
 
     fn flush(&self) {}
