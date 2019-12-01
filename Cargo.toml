@@ -17,5 +17,4 @@ log = "0.4"
 log4rs = "0.8"
 serde-value = "0.6"
 gelf_logger = { git = "https://github.com/zenria/rust-gelf_logger.git", branch="upstream-bugfixes_improvments"}
-#gelf_logger = { path="../rust-gelf_logger"}
 serde_gelf = "0.1"
